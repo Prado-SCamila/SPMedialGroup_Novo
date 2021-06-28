@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\prado\\OneDrive\\Área de Trabalho\\SpMedical\\SPMedialGroup_Novo\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\SpMedicalG_WebApi.csproj": {}
+    "C:\\Users\\40461681889\\Desktop\\Spmedical.Camila\\SPMedialGroup_Novo\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\SpMedicalG_WebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\prado\\OneDrive\\Área de Trabalho\\SpMedical\\SPMedialGroup_Novo\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\SpMedicalG_WebApi.csproj": {
+    "C:\\Users\\40461681889\\Desktop\\Spmedical.Camila\\SPMedialGroup_Novo\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\SpMedicalG_WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\prado\\OneDrive\\Área de Trabalho\\SpMedical\\SPMedialGroup_Novo\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\SpMedicalG_WebApi.csproj",
+        "projectUniqueName": "C:\\Users\\40461681889\\Desktop\\Spmedical.Camila\\SPMedialGroup_Novo\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\SpMedicalG_WebApi.csproj",
         "projectName": "SpMedicalG_WebApi",
-        "projectPath": "C:\\Users\\prado\\OneDrive\\Área de Trabalho\\SpMedical\\SPMedialGroup_Novo\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\SpMedicalG_WebApi.csproj",
-        "packagesPath": "C:\\Users\\prado\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\prado\\OneDrive\\Área de Trabalho\\SpMedical\\SPMedialGroup_Novo\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\obj\\",
+        "projectPath": "C:\\Users\\40461681889\\Desktop\\Spmedical.Camila\\SPMedialGroup_Novo\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\SpMedicalG_WebApi.csproj",
+        "packagesPath": "C:\\Users\\40461681889\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\40461681889\\Desktop\\Spmedical.Camila\\SPMedialGroup_Novo\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\prado\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\40461681889\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -97,7 +97,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

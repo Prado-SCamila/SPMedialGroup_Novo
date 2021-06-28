@@ -36,7 +36,40 @@ namespace SpMedicalG_WebApi.Repositories
 
         public List<ProntuariosDomain> ListarTodos()
         {
-            throw new NotImplementedException();
+            //crio uma lista para ser lida
+            List<ProntuariosDomain> listaProntuarios = new List<ProntuariosDomain>();
+            //Declaro a sql connection passando a string de conexao como parametro
+            using (SqlConnection con = new SqlConnection (stringConexao))
+            { 
+
+                 //declaro a instrução a ser executada
+                 using querySelectAll = "SELECT idProntuario, dataNascimento, telefone, RG, CPF, endereco FROM Prontuarios";
+
+                  //abre a conexão com o bco de dados
+                 con.Open();
+                 //Declara o objeto que vai ler a tabela no bco de dados
+                  SqlDataReader rdr;
+
+            using (SqlCommmand cmd = new SqlCommand (querySelectAll, con))
+            {
+               rdr = cmd.ExecuteReader();
+            }
+             //enquanto houverem registros para serem lidos, o laço se repete
+            while (rdr.Read())
+            {
+               ProntuariosDomain prontuario = new ProntuariosDomain();
+
+            {
+                       idProntuario = Convert.ToInt32(rdr[0]);
+                        prontuario = rdr[1].ToString();
+            };
+
+             listaProntuarios.Add(prontuario);
+            }
         }
     }
+      return listaProntuarios;
+    }
 }
+}
+

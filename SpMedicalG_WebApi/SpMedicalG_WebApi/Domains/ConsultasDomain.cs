@@ -8,12 +8,16 @@ namespace SpMedicalG_WebApi.Domains
     public class ConsultasDomain
     {
         public int idConsulta { get; set; }
+
         public int idProntuario { get; set; }
 
         public int idMedico { get; set; }
+
         public DateTime dataConsulta { get; set; }
+
         public int idSituacao { get; set; }
 
+        public string  descricao { get; set; }
 
     }
 }

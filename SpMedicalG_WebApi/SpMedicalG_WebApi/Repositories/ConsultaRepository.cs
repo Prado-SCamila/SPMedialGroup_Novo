@@ -10,6 +10,7 @@ namespace SpMedicalG_WebApi.Repositories
     public class ConsultaRepository : IConsultaRepository
     {
         private string stringConexao= "Data Source=DESKTOP-840P8H6\\SQLEXPRESS; initial catalog=Spmed;user id=sa;pwd=miladori23"
+
         public void AtualizarIdCorpo(ConsultasDomain consulta)
         {
             throw new NotImplementedException();
@@ -39,9 +40,10 @@ namespace SpMedicalG_WebApi.Repositories
         {
             List<ConsultasDomain> listaConsultas = new List<ConsultasDomain>();
 
-            using (SqlConnection con = new SqlConnection (stringConexao));
+            using (SqlConnection con = new SqlConnection (stringConexao))
+            { 
 
-            using querySelectAll = "SELECT idConsulta, dataConsulta FROM Consultas";
+            using querySelectAll = "SELECT idConsulta, dataConsulta, situacao, descricao FROM Consultas";
 
             //abre a conexão com o bco de dados
             con.Open();
@@ -52,14 +54,21 @@ namespace SpMedicalG_WebApi.Repositories
             {
                 rdr = cmd.ExecuteReader();
             }
-
+            //enquanto houverem registros para serem lidos, o laço se repete
             while (rdr.Read())
             {
                 ConsultasDomain consulta = new ConsultasDomain();
 
-                i
+                {
+                    idConsulta = Convert.ToInt32(rdr[0]);
+                    consulta = rdr[1].ToString();
+                };
 
+                listaConsultas.Add(consultas);
             }
         }
     }
+    return listaConsultas;
 }
+    }
+
