@@ -2,6 +2,7 @@
 using SpMedicalG_WebApi.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,17 +24,71 @@ namespace SpMedicalG_WebApi.Repositories
 
         public ConsultasDomain BuscarPorId(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string querySelectById = "SELECT idConsulta, dataConsulta FROM Consultas WHERE idConsulta = @id";
+
+                con.Open();
+
+                SqlDataReader rdr;
+
+                using (SqlCommand cmd = new SqlCommand(querySelectById, con))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    rdr = cmd.ExecuteReader();
+
+                    if (rdr.Read())
+                    {
+                        ConsultasDomain consultaBuscada = new ConsultasDomain()
+                        {
+                            idConsulta = Convert.ToInt32(rdr[0]),
+                            dataConsulta = rdr.["dataConsulta"].ToString()
+                        };
+                        //Se algo for encontrado, retorna o que foi buscado
+                        return consultaBuscada;
+                    }
+                    //se nada for encontrado, devolve null
+                    return null;
+                }
+            }
         }
 
         public void Cadastrar(ConsultasDomain novaConsulta)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryInsert = "INSERT INTO Consultas(dataConsulta) VALUES (@dataConsulta)";//??
+
+                    using (SqlCommand cmd = new SqlCommand(queryInsert, con))
+                    {
+                    //passa o valor inserido para o parametro 
+                    cmd.Parameters.AddWithValue("@dataConsulta", novaConsulta.dataConsulta);
+
+                    //abre a conexao
+                    con.Open();
+
+                    //Executa a Query
+                    cmd.ExecuteNonQuery();
+                    }
+            }
         }
 
         public void Deletar(int id)
         {
-            throw new NotImplementedException();
+           using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryDelete = "DELETE FROM Consultas Where idConsulta = @ID";
+
+                using (SqlCommand cmd = new SqlCommand(queryDelete,con))
+                {
+                    cmd.Parameters.AddWithValue("@ID", id);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public List<ConsultasDomain> ListarTodos()

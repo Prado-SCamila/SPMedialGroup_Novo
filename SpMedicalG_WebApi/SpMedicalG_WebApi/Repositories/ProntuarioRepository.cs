@@ -2,6 +2,7 @@
 using SpMedicalG_WebApi.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,18 +22,76 @@ namespace SpMedicalG_WebApi.Repositories
 
         public ProntuariosDomain BuscarPorId(int id)
         {
-            throw new NotImplementedException();
-        }
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string querySelectById = "SELECT idProntuario,dataNascimento, telefone,rg,cpf,endereco FROM Prontuarios WHERE idProntuario = @id";
 
-        public void Cadastrar(ProntuariosDomain prontuarios)
+                con.Open();
+
+                SqlDataReader rdr;
+
+                using (SqlCommand cmd = new SqlCommand(querySelectById, con))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    rdr = cmd.ExecuteReader();
+
+                    //Verifica se há dados para serem lidos
+                    if (rdr.Read())
+                    {
+                        ProntuariosDomain prontuarioBuscado = new ProntuariosDomain()
+                        {
+                            idProntuario = Convert.ToInt32(rdr[0]),
+                            dataNasc = rdr.["dataConsulta"].ToString(),
+                            telefone = rdr.["telefone"].ToString(),
+                            RG = rdr.["rg"].ToString(),
+                            CPF = rdr.["cpf"].ToString(),
+                            endereco = rdr.["endereco"].ToString(),
+
+                        };
+                        //Se algo for encontrado, retorna o que foi buscado
+                        return prontuarioBuscado;
+                    }
+                    //se nada for encontrado, devolve null
+                    return null;
+                }
+            }
+
+        public void Cadastrar(ProntuariosDomain novoProntuario)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryInsert = "INSERT INTO Prontuarios (cpf),(rg),(telefone),(endereco) VALUES (@cpf), (@rg),(@telefone),(@endereco)";
+
+                using (SqlCommand cmd = new SqlCommand(queryInsert, con))
+                {
+                    //preciso de um metodo cadastrar pra cada campo da tabela prontuarios?
+                    cmd.Parameters.AddWithValue("@cpf", novoProntuario.CPF);
+                    cmd.Parameters.AddWithValue("@rg", novoProntuario.RG);
+                    cmd.Parameters.AddWithValue("@telefone", novoProntuario.telefone);
+                    cmd.Parameters.AddWithValue("@endereco", novoProntuario.endereco);
+                    
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Deletar(int id)
         {
-            throw new NotImplementedException();
-        }
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryDelete = "DELETE FROM Prontuarios Where id= @ID";
+
+                using (SqlCommand cmd = new SqlCommand(queryDelete, con))
+                {
+                    cmd.Parameters.AddWithValue("@ID", id);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
 
         public List<ProntuariosDomain> ListarTodos()
         {
@@ -71,5 +130,10 @@ namespace SpMedicalG_WebApi.Repositories
       return listaProntuarios;
     }
 }
-}
+
+        public List<ProntuariosDomain> ListarTodos()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
