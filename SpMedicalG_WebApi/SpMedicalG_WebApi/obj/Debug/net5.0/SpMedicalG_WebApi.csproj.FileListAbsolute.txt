@@ -1,0 +1,7 @@
+C:\Users\prado\OneDrive\Área de Trabalho\SpMedicalGroup\SPMedialGroup_Novo\SpMedicalG_WebApi\SpMedicalG_WebApi\obj\Debug\net5.0\SpMedicalG_WebApi.csproj.AssemblyReference.cache
+C:\Users\prado\OneDrive\Área de Trabalho\SpMedicalGroup\SPMedialGroup_Novo\SpMedicalG_WebApi\SpMedicalG_WebApi\obj\Debug\net5.0\SpMedicalG_WebApi.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\prado\OneDrive\Área de Trabalho\SpMedicalGroup\SPMedialGroup_Novo\SpMedicalG_WebApi\SpMedicalG_WebApi\obj\Debug\net5.0\SpMedicalG_WebApi.AssemblyInfoInputs.cache
+C:\Users\prado\OneDrive\Área de Trabalho\SpMedicalGroup\SPMedialGroup_Novo\SpMedicalG_WebApi\SpMedicalG_WebApi\obj\Debug\net5.0\SpMedicalG_WebApi.AssemblyInfo.cs
+C:\Users\prado\OneDrive\Área de Trabalho\SpMedicalGroup\SPMedialGroup_Novo\SpMedicalG_WebApi\SpMedicalG_WebApi\obj\Debug\net5.0\SpMedicalG_WebApi.csproj.CoreCompileInputs.cache
+C:\Users\prado\OneDrive\Área de Trabalho\SpMedicalGroup\SPMedialGroup_Novo\SpMedicalG_WebApi\SpMedicalG_WebApi\obj\Debug\net5.0\SpMedicalG_WebApi.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\prado\OneDrive\Área de Trabalho\SpMedicalGroup\SPMedialGroup_Novo\SpMedicalG_WebApi\SpMedicalG_WebApi\obj\Debug\net5.0\SpMedicalG_WebApi.MvcApplicationPartsAssemblyInfo.cache

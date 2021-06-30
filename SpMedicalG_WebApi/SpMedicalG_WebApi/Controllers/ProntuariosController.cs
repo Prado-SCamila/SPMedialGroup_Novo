@@ -33,13 +33,15 @@ namespace SpMedicalG_WebApi.Controllers
 
             return Ok(listaProntuarios);
         }
+
         [HttpPost]
-        public IActionResult Post()
+        public IActionResult Post(ProntuariosDomain novoProntuario)
         {
-            _prontuarioRepository.Cadastrar();
+            _prontuarioRepository.Cadastrar(novoProntuario);
 
             return StatusCode(201);
         }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
 
@@ -54,7 +56,7 @@ namespace SpMedicalG_WebApi.Controllers
 
         public IActionResult GetById(int id)
         {
-          ProntuariosDomain prontuarioBuscado = _prontuarioRepository.BuscarPorId(id);
+            ProntuariosDomain prontuarioBuscado = _prontuarioRepository.BuscarPorId(id);
 
             if (prontuarioBuscado == null)
             {
@@ -62,5 +64,57 @@ namespace SpMedicalG_WebApi.Controllers
             }
             return Ok(prontuarioBuscado);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult PutUrl(int id, ProntuariosDomain prontuarioAtualizado)
+        {
+            ProntuariosDomain prontuarioBuscado = _prontuarioRepository.BuscarPorId(id);
+
+            if (prontuarioBuscado == null)
+            {
+                return NotFound
+                    (new
+                    {
+                        mensagem = "prontuario não encontrado",
+                        erro = true
+                    }
+                    );
+            }
+
+            try
+            {
+                _prontuarioRepository.AtualizarUrl(id, prontuarioAtualizado);
+
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+            [HttpPut]
+            public IActionResult PutIdBody(ProntuariosDomain prontuarioAtualizado)
+            {
+                //cria o objeto usuarioBuscado que irá receber o valor buscado no bco de dados
+               ProntuariosDomain prontuarioBuscado = _prontuarioRepository.BuscarPorId(prontuarioAtualizado.idProntuario);
+
+                //verifica se algo foi encontrado
+                if (prontuarioBuscado != null)
+                {
+                    //se sim, atualiza o registro
+                    try
+                    {
+                        _prontuarioRepository.AtualizarIdCorpo(prontuarioAtualizado);
+
+                        return NoContent();
+
+                    }
+                    catch (Exception erro)
+                    {
+                        return BadRequest(erro);
+                    }
+                }
+            }
     }
 }
+

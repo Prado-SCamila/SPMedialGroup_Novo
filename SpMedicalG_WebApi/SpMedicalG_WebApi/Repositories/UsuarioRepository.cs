@@ -10,14 +10,47 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
+        private string stringConexao = "Data Source=DESKTOP-840P8H6\\SQLEXPRESS; initial catalog=Spmed;user id=sa;pwd=miladori23";
+        /// <summary>
+        /// Atualiza um usuario passando um id pelo corpo da requisição
+        /// </summary>
+        /// <param name="usuario">Objeto usuario com as novas informações</param>
         public void AtualizarIdCorpo(UsuariosDomain usuario)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryUpdateIdBody = "Update Usuarios SET nomeUsuario = @nomeUsuario, senha = @senha, email = @email, WHERE idUsuario = @ID";
+
+                using (SqlCommand cmd = new SqlCommand(queryUpdateIdBody, con))
+                {
+                    cmd.Parameters.AddWithValue("@nomeUsuario", usuario.nomeUsuario);
+                    cmd.Parameters.AddWithValue("@email", usuario.email);
+                    cmd.Parameters.AddWithValue("@senha", usuario.senha);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void AtualizarUrl(int id, UsuariosDomain usuario)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryUpdateUrl = "UPDATE Usuarios SET nomeUsuario = @nomeUsuario, email = @email,senha = @senha WHERE idUsuario = @ID";
+
+                using (SqlCommand cmd = new SqlCommand(queryUpdateUrl, con))
+                {
+                    cmd.Parameters.AddWithValue("@nomeUsuario", usuario.nomeUsuario);
+                    cmd.Parameters.AddWithValue("@email", usuario.email);
+                    cmd.Parameters.AddWithValue("@senha", usuario.senha);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public UsuariosDomain BuscarPorId(int id)
@@ -41,9 +74,10 @@ namespace SpMedicalG_WebApi.Repositories
                         UsuariosDomain usuarioBuscado = new UsuariosDomain()
                         {
                             idUsuario = Convert.ToInt32(rdr[0]),
-                            nomeUsuario = rdr.["dataConsulta"].ToString(),
-                            email = rdr.["email"].ToString(),
-                            senha = rdr.["senha"].ToString(),
+                            idTipoUsuario = Convert.ToInt32(rdr[1]),
+                            nomeUsuario = rdr[2].ToString(),
+                            email = rdr[3].ToString(),
+                            senha = rdr[4].ToString(),
                         };
                         //Se algo for encontrado, retorna o que foi buscado
                         return usuarioBuscado;
@@ -52,16 +86,18 @@ namespace SpMedicalG_WebApi.Repositories
                     return null;
                 }
             }
+        }
 
         public void Cadastrar(UsuariosDomain novoUsuario)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string queryInsert = "INSERT INTO Usuarios(nomeUsuario), (email), (senha) VALUES (@nomeUsuario),(@email),(@senha)";
+                string queryInsert = "INSERT INTO Usuarios(nomeUsuario), (idTipoUsuario),(email), (senha) VALUES (@nomeUsuario),(@idTipoUsuario),(@email),(@senha)";
 
                 using (SqlCommand cmd = new SqlCommand(queryInsert, con))
                 {
                     cmd.Parameters.AddWithValue("@nomeUsuario", novoUsuario.nomeUsuario);
+                    cmd.Parameters.AddWithValue("@idTipoUsuario", novoUsuario.idTipoUsuario);
                     cmd.Parameters.AddWithValue("@email", novoUsuario.email);
                     cmd.Parameters.AddWithValue("@senha", novoUsuario.senha);
 
@@ -71,6 +107,7 @@ namespace SpMedicalG_WebApi.Repositories
                 }
             }
         }
+
 
         public void Delete(int id)
         {
@@ -85,48 +122,53 @@ namespace SpMedicalG_WebApi.Repositories
 
                     cmd.ExecuteNonQuery();
                 }
+            }
+        }
 
         public List<UsuariosDomain> ListarTodos()
         {
             //crio uma lista para ser lida
             List<UsuariosDomain> listaUsuarios = new List<UsuariosDomain>();
             //Declaro a sql connection passando a string de conexao como parametro
-            using (SqlConnection con = new SqlConnection (stringConexao))
-            { 
-
-            //declaro a instrução a ser executada
-            using querySelectAll = "SELECT idUsuario, nome, email, senha FROM Usuarios";
-
-            //abre a conexão com o bco de dados
-            con.Open();
-
-            //Declara o objeto que vai ler a tabela no bco de dados
-            SqlDataReader rdr;
-
-            using (SqlCommmand cmd = new SqlCommand (querySelectAll, con))
+            using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                rdr = cmd.ExecuteReader();
-            }
-            //enquanto houverem registros para serem lidos, o laço se repete
-            while (rdr.Read())
-            {
-                UsuariosDomain usuario = new UsuariosDomain();
 
+                //declaro a instrução a ser executada
+                string querySelectAll = "SELECT idUsuario,idTipoUsuario, nome, email, senha FROM Usuarios";
+
+                //abre a conexão com o bco de dados
+                con.Open();
+
+                //Declara o objeto que vai ler a tabela no bco de dados
+                SqlDataReader rdr;
+
+                using (SqlCommand cmd = new SqlCommand(querySelectAll, con))
                 {
-                    idUsuario = Convert.ToInt32(rdr[0]);
-                        usuario = rdr[1].ToString();
-                };
+                    rdr = cmd.ExecuteReader();
 
-                listaUsuarios.Add(usuario);
+                    //enquanto houverem registros para serem lidos, o laço se repete
+                    while (rdr.Read())
+                    {
+                        UsuariosDomain usuario = new UsuariosDomain();
+
+                        {
+                            usuario.idUsuario = Convert.ToInt32(rdr[0]);
+                            usuario.idTipoUsuario = Convert.ToInt32(rdr[1]);
+                            usuario.nomeUsuario = rdr[2].ToString();
+                            usuario.email = rdr[3].ToString();
+                            usuario.senha = rdr[4].ToString();
+                            
+                        };
+
+                        listaUsuarios.Add(usuario);
+                    }
+                }
             }
+            return listaUsuarios;
         }
     }
-    return listaUsuarios;
-}
 }
 
-        public List<UsuariosDomain> ListarTodos()
-        {
-            throw new NotImplementedException();
-        }
-    }
+
+
+       

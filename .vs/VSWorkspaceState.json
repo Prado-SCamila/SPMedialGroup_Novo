@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\SpMedicalG_WebApi",
+    "\\SpMedicalG_WebApi\\SpMedicalG_WebApi",
+    "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Domains",
+    "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Repositories"
+  ],
+  "SelectedNode": "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Domains\\ConsultasDomain.cs",
+  "PreviewInSolutionExplorer": false
+}

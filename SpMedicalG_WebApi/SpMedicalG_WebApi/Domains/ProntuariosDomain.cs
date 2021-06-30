@@ -13,7 +13,7 @@ namespace SpMedicalG_WebApi.Domains
         public int telefone { get; set; }
         public string RG { get; set; }
         public string CPF { get; set; }
-        public int endereco { get; set; }
+        public string endereco { get; set; }
             
 }
 }

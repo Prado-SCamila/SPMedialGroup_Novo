@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SpMedicalG_WebApi.Repositories;
+using SpMedicalG_WebApi.Interfaces;
 
 namespace SpMedicalG_WebApi.Controllers
 {
@@ -15,13 +17,13 @@ namespace SpMedicalG_WebApi.Controllers
     public class ConsultasController : ControllerBase
     {
         //declaro o objeto que vai receber os métodos
-        private IConsultaRespository _consultaRepository { get; set; }
+        private IConsultaRepository _consultaRepository { get; set; }
 
         // método construtor
         public ConsultasController()
         {
             //crio o objeto
-            _consultaRepository = new ConsultaRespository();
+            _consultaRepository = new ConsultaRepository();
         }
 
         [HttpGet]
@@ -33,9 +35,9 @@ namespace SpMedicalG_WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post()
+        public IActionResult Post(ConsultasDomain novaConsulta)
         {
-            _consultaRepository.Cadastrar();
+            _consultaRepository.Cadastrar(novaConsulta);
 
             return StatusCode(201);
         }
@@ -44,7 +46,7 @@ namespace SpMedicalG_WebApi.Controllers
         public IActionResult Delete(int id)
 
         {
-            _consultaRepository.Delete(id);
+            _consultaRepository.Deletar(id);
 
             //vai retornar um NO-CONTENT
             return StatusCode(204);
@@ -56,12 +58,75 @@ namespace SpMedicalG_WebApi.Controllers
         {
             ConsultasDomain consultaBuscada = _consultaRepository.BuscarPorId(id);
 
-            if(consultaBuscada ==null)
+            if (consultaBuscada == null)
             {
                 return NotFound("Nenhuma consulta foi encontrada");
             }
             return Ok(consultaBuscada);
         }
 
+        /// <summary>
+        /// Atualiza uma consulta existente passando o id como parametro
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="consultaAtualizada"></param>
+        /// <returns> no content</returns>
+        //colocar o id aqui na rota pois o método precisa do id como parametro
+
+        [HttpPut("{id}")]
+        public IActionResult PutUrl(int id, ConsultasDomain consultaAtualizada)
+        {
+            ConsultasDomain consultaBuscada = _consultaRepository.BuscarPorId(id);
+
+            if (consultaBuscada == null)
+            {
+                return NotFound
+                    (new
+                    {
+                        mensagem = "Usuario não encontrado",
+                        erro = true
+                    }
+                    );
+            }
+            //tratamento de erros
+            try
+            {
+                _consultaRepository.AtualizarUrl(id, consultaAtualizada);
+
+                return NoContent();
+            }
+
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
+        }
+        [HttpPut]
+        public IActionResult PutIdBody(ConsultasDomain consultaAtualizada)
+        {
+            //cria o objeto usuarioBuscado que irá receber o valor buscado no bco de dados
+            ConsultasDomain consultaBuscado = _consultaRepository.BuscarPorId(consultaAtualizada.idConsulta);
+
+            //verifica se algo foi encontrado
+            if (consultaBuscado != null)
+            {
+                //se sim, atualiza o registro
+                try
+                {
+                    _consultaRepository.AtualizarIdCorpo(consultaAtualizada);
+
+                    return NoContent();
+
+                }
+                catch (Exception erro)
+                {
+                    return BadRequest(erro);
+                }
+                
+            }
+
+        }
     }
 }
+
