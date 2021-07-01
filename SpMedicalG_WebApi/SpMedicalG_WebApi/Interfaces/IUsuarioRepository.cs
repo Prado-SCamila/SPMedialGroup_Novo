@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using pMedicalG_WebApi.Domains;
 using SpMedicalG_WebApi.Domains;
 
 namespace SpMedicalG_WebApi.Interfaces

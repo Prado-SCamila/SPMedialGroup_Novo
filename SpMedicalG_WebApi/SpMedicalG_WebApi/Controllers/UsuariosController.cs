@@ -10,13 +10,11 @@ using System.Threading.Tasks;
 
 namespace SpMedicalG_WebApi.Controllers
 {
-    ///<summary>
-    ///Controller respomsável pelos endpoints url
-    //////<summary>
-
-
+   
+    //Controller respomsável pelos endpoints url
+    
     //Define que a resposta da API será no formato Json
-    [Produces("application/json")]
+    [Produces("Application/json")]
     //Define que a rota de uma requisição será no formato domínio( www.site.com.br)/api/nomecontroller
     [Route("api/[controller]")]
     [ApiController]
@@ -102,31 +100,41 @@ namespace SpMedicalG_WebApi.Controllers
                 return BadRequest();
             }
         }
-                    
-            //associado ao método AtualizarIdCorpo no repositório
-            [HttpPut]
-            public IActionResult PutIdBody(UsuariosDomain usuarioAtualizado)
+
+        //associado ao método AtualizarIdCorpo no repositório
+        [HttpPut]
+        public IActionResult PutIdBody(UsuariosDomain usuarioAtualizado)
+        {
+            //cria o objeto usuarioBuscado que irá receber o valor buscado no bco de dados
+            UsuariosDomain usuarioBuscado = _usuarioRepository.BuscarPorId(usuarioAtualizado.idUsuario);
+
+            //verifica se algo foi encontrado
+            if (usuarioBuscado != null)
             {
-                //cria o objeto usuarioBuscado que irá receber o valor buscado no bco de dados
-                UsuariosDomain usuarioBuscado = _usuarioRepository.BuscarPorId(usuarioAtualizado.idUsuario);
-
-                //verifica se algo foi encontrado
-                if(usuarioBuscado != null)
+                //se sim, atualiza o registro
+                try
                 {
-                    //se sim, atualiza o registro
-                    try
-                    {
-                        _usuarioRepository.AtualizarIdCorpo(usuarioAtualizado);
+                    _usuarioRepository.AtualizarIdCorpo(usuarioAtualizado);
 
-                        return NoContent();
+                    return NoContent();
 
-                    }
-                    catch (Exception erro)
-                    {
-                        return BadRequest(erro);
-                    }
                 }
+                catch (Exception erro)
+                {
+                    return BadRequest(erro);
+                }
+
             }
+         return NotFound
+         (
+            new
+           {
+             erro = true,
+             mensagem = "Consulta não encontrada"
+           }
+         );
+
         }
     }
 }
+

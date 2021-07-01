@@ -114,7 +114,15 @@ namespace SpMedicalG_WebApi.Controllers
                         return BadRequest(erro);
                     }
                 }
-            }
+            return NotFound
+           (
+             new
+             {
+                 erro = true,
+                 mensagem = "Prontuario não encontrada"
+             }
+       );
+        }
     }
 }
 

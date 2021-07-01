@@ -3,9 +3,10 @@
     "",
     "\\SpMedicalG_WebApi",
     "\\SpMedicalG_WebApi\\SpMedicalG_WebApi",
+    "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Controllers",
     "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Domains",
     "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Repositories"
   ],
-  "SelectedNode": "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Domains\\ConsultasDomain.cs",
+  "SelectedNode": "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Controllers\\ConsultasController.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -10,7 +10,7 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class ProntuarioRepository : IProntuarioRepository
     {
-        private string stringConexao = "Data Source=DESKTOP-840P8H6\\SQLEXPRESS; initial catalog=Spmed;user id=sa;pwd=miladori23";
+        private string stringConexao = "Data Source=DESKTOP-840P8H6; initial catalog= SPmed;user id=sa;pwd=miladori23";
         public void AtualizarIdCorpo(ProntuariosDomain prontuario)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
@@ -77,13 +77,13 @@ namespace SpMedicalG_WebApi.Repositories
                     {
                         ProntuariosDomain prontuarioBuscado = new ProntuariosDomain()
                         {
-                             idProntuario = Convert.ToInt32(rdr[0]),
-                             idUsuario = Convert.ToInt32(rdr[1]),
-                             dataNasc = Convert.ToDateTime(rdr[2]),
-                             telefone = Convert.ToInt32(rdr[3]),
-                             RG = rdr[4].ToString(),
-                             CPF = rdr[5].ToString(),
-                             endereco = rdr[6].ToString(),
+                            idProntuario = Convert.ToInt32(rdr[0]),
+                            idUsuario = Convert.ToInt32(rdr[1]),
+                            dataNasc = Convert.ToDateTime(rdr[2]),
+                            telefone = rdr[3].ToString(),
+                            RG = rdr[4].ToString(),
+                            CPF = rdr[5].ToString(),
+                            endereco = rdr[6].ToString(),
 
                         };
                    
@@ -162,7 +162,7 @@ namespace SpMedicalG_WebApi.Repositories
                         prontuario.idProntuario = Convert.ToInt32(rdr[0]);
                         prontuario.idUsuario = Convert.ToInt32(rdr[1]);
                         prontuario.dataNasc = Convert.ToDateTime(rdr[2]);
-                        prontuario.telefone = Convert.ToInt32(rdr[3]);
+                        prontuario.telefone = rdr[3].ToString();
                         prontuario.RG = rdr[4].ToString();
                         prontuario.CPF = rdr[5].ToString();
                         prontuario.endereco = rdr[6].ToString();

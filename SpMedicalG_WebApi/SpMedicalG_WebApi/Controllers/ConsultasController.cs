@@ -125,7 +125,17 @@ namespace SpMedicalG_WebApi.Controllers
                 }
                 
             }
-
+            //Caso não seja enconrtado, retorna o NOTFOUND com uma mensagem personalizada
+            return NotFound
+                (
+                  new
+                  {
+                      erro = true,
+                      mensagem = "Consulta não encontrada"
+                  }
+            );
+           
+           
         }
     }
 }

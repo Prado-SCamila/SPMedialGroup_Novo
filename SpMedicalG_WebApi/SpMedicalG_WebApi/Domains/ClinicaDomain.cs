@@ -14,6 +14,5 @@ namespace SpMedicalG_WebApi.Domains
         public string endereco { get; set; }
     }
 }
-}
-}
+
 

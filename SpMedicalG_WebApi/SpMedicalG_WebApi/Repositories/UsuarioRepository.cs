@@ -10,7 +10,7 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private string stringConexao = "Data Source=DESKTOP-840P8H6\\SQLEXPRESS; initial catalog=Spmed;user id=sa;pwd=miladori23";
+        private string stringConexao = "Data Source= DESKTOP-840P8H6; initial catalog= SPmed;user id=sa;pwd=miladori23";
         /// <summary>
         /// Atualiza um usuario passando um id pelo corpo da requisição
         /// </summary>
@@ -137,8 +137,8 @@ namespace SpMedicalG_WebApi.Repositories
                 string querySelectAll = "SELECT idUsuario,idTipoUsuario, nome, email, senha FROM Usuarios";
 
                 //abre a conexão com o bco de dados
-                con.Open();
 
+                con.Open();
                 //Declara o objeto que vai ler a tabela no bco de dados
                 SqlDataReader rdr;
 

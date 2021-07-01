@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SpMedicalG_WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:SpMedicalG_WebApi.Controllers.ConsultasController.PutUrl(System.Int32,SpMedicalG_WebApi.Domains.ConsultasDomain)">
+            <summary>
+            Atualiza uma consulta existente passando o id como parametro
+            </summary>
+            <param name="id"></param>
+            <param name="consultaAtualizada"></param>
+            <returns> no content</returns>
+        </member>
+        <member name="M:SpMedicalG_WebApi.Controllers.UsuariosController.Get">
+            <summary>
+            Lista todos os usuarios
+            </summary>
+            <returns> Retorna uma Lista e um Status Code</returns>
+        </member>
+        <member name="M:SpMedicalG_WebApi.Repositories.UsuarioRepository.AtualizarIdCorpo(SpMedicalG_WebApi.Domains.UsuariosDomain)">
+            <summary>
+            Atualiza um usuario passando um id pelo corpo da requisição
+            </summary>
+            <param name="usuario">Objeto usuario com as novas informações</param>
+        </member>
+    </members>
+</doc>

@@ -10,7 +10,7 @@ namespace SpMedicalG_WebApi.Domains
         public int idProntuario { get; set; }
         public int idUsuario { get; set; }
         public DateTime dataNasc { get; set; }
-        public int telefone { get; set; }
+        public string telefone { get; set; }
         public string RG { get; set; }
         public string CPF { get; set; }
         public string endereco { get; set; }
