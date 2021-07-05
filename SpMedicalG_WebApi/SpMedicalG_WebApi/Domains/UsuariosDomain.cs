@@ -17,5 +17,7 @@ namespace SpMedicalG_WebApi.Domains
         public string senha { get; set; }
 
         public int idPermissao { get; set; }
+
+        public TipoPermissao permissao { get; set; }
     }
 }

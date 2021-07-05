@@ -170,6 +170,39 @@ namespace SpMedicalG_WebApi.Repositories
             }
             return listaUsuarios;
         }
+        public UsuariosDomain Login(string email, string senha)
+        {
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string querySelect = "SELECT email, senha, permissao FROM  Usuarios WHERE email = @email AND senha = @senha";
+
+                using (SqlCommand cmd = new SqlCommand(querySelect, con))
+                {
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@senha", senha);
+
+                    con.Open();
+
+                    SqlDataReader rdr = cmd.ExecuteReader();
+
+                    if(rdr.Read())
+                    {
+                        UsuariosDomain usuarioBuscado = new UsuariosDomain()
+                        {
+                            email = rdr[0].ToString(),
+                            senha = rdr[1].ToString(),
+                            //crio um objeto do tipo permissao para receber os valores do atributo permissao de outra entidade(classe ou tabela do bco)
+
+                            permissao = new TipoPermissao()
+                            {
+                                permissao = rdr[2].ToString(),
+                            },
+                        };
+                        return usuarioBuscado;
+                    } 
+                }return null;
+            }
+        }
     }
 }
 
