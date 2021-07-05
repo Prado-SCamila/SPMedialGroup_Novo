@@ -10,7 +10,9 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class ProntuarioRepository : IProntuarioRepository
     {
-        private string stringConexao = "Data Source=DESKTOP-840P8H6; initial catalog= SPmed;user id=sa;pwd=miladori23";
+        private string stringConexao = "Data Source=LAB08DESK1601\\SQLEXPRESS; initial catalog= SPmed;user id=sa;pwd=sa132";
+
+
         public void AtualizarIdCorpo(ProntuariosDomain prontuario)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
@@ -21,7 +23,7 @@ namespace SpMedicalG_WebApi.Repositories
                 {
                     cmd.Parameters.AddWithValue("@idUsuario", prontuario.idUsuario);
                     cmd.Parameters.AddWithValue("@dataNasc", prontuario.dataNasc);
-                    cmd.Parameters.AddWithValue("@teefone", prontuario.telefone);
+                    cmd.Parameters.AddWithValue("@telefone", prontuario.telefone);
                     cmd.Parameters.AddWithValue("@RG", prontuario.RG);
                     cmd.Parameters.AddWithValue("@CPF", prontuario.CPF);
                     cmd.Parameters.AddWithValue("@endereco", prontuario.endereco);
@@ -39,7 +41,7 @@ namespace SpMedicalG_WebApi.Repositories
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 //????
-                string queryUpdateUrl = "UPDATE Prontuarios SET dataNascimento = @dataNascimento telefone = @telefone, rg = @rg, cpf = @cpf, endereco = @endereco  WHERE idProntuario = @ID";
+                string queryUpdateUrl = "UPDATE Prontuarios SET dataNascimento = @dataNascimento ,telefone = @telefone, rg = @rg, cpf = @cpf, endereco = @endereco  WHERE idProntuario = @ID";
 
                 using (SqlCommand cmd = new SqlCommand(queryUpdateUrl, con))
                 {

@@ -107,6 +107,23 @@ namespace SpMedicalG_WebApi.Controllers
             }
 
         }
+
+
+        //ITEM 7 - FUNCIONALIDADE Método para paciente encontrar somente as suas próprias consultas agendadas no sistema
+        [HttpGet("{id}")]
+        public IActionResult GetId(int id) 
+        {
+            ConsultasDomain consultasPaciente = _consultaRepository.BuscarPorId(id);
+            
+            if(consultasPaciente==null)
+            {
+                return NotFound("Você não tem consultas agendadas");
+            }
+            return Ok(consultasPaciente);
+        }
+
+
+
         [Authorize(Roles = "medico")]
         [HttpPut]
         public IActionResult PutIdBody(ConsultasDomain consultaAtualizada)

@@ -43,6 +43,7 @@ namespace SpMedicalG_WebApi.Controllers
 
             return StatusCode(201);
         }
+
         [Authorize(Roles = "medico")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
@@ -96,11 +97,13 @@ namespace SpMedicalG_WebApi.Controllers
                 return BadRequest();
             }
         }
+
+        
         [Authorize(Roles = "medico")]
         [HttpPut]
             public IActionResult PutIdBody(ProntuariosDomain prontuarioAtualizado)
             {
-                //cria o objeto usuarioBuscado que irá receber o valor buscado no bco de dados
+                //cria o objeto prontuarioBuscado que irá receber o valor buscado no bco de dados
                ProntuariosDomain prontuarioBuscado = _prontuarioRepository.BuscarPorId(prontuarioAtualizado.idProntuario);
 
                 //verifica se algo foi encontrado
@@ -124,7 +127,7 @@ namespace SpMedicalG_WebApi.Controllers
              new
              {
                  erro = true,
-                 mensagem = "Prontuario não encontrada"
+                 mensagem = "Prontuario não encontrado"
              }
        );
         }

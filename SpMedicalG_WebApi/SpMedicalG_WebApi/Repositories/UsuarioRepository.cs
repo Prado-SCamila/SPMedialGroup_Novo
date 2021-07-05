@@ -10,7 +10,7 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private string stringConexao = "Data Source= DESKTOP-840P8H6; initial catalog= SPmed;user id=sa;pwd=miladori23";
+        private string stringConexao = "Data Source= LAB08DESK1601\\SQLEXPRESS; initial catalog= SPmed;user id=sa;pwd=sa132";
         /// <summary>
         /// Atualiza um usuario passando um id pelo corpo da requisição
         /// </summary>
@@ -19,7 +19,7 @@ namespace SpMedicalG_WebApi.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string queryUpdateIdBody = "Update Usuarios SET nomeUsuario = @nomeUsuario, senha = @senha, email = @email,idPermissao = @idPermissao WHERE idUsuario = @ID";
+                string queryUpdateIdBody = "Update Usuarios SET nome = @nomeUsuario, senha = @senha, email = @email,idPermissao = @idPermissao WHERE idUsuario = @ID";
 
                 using (SqlCommand cmd = new SqlCommand(queryUpdateIdBody, con))
                 {
@@ -39,7 +39,7 @@ namespace SpMedicalG_WebApi.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string queryUpdateUrl = "UPDATE Usuarios SET nomeUsuario = @nomeUsuario, email = @email,senha = @senha, idPermissao = @idPermissao WHERE idUsuario = @ID";
+                string queryUpdateUrl = "UPDATE Usuarios SET nome = @nomeUsuario, email = @email,senha = @senha, idPermissao = @idPermissao WHERE idUsuario = @ID";
 
                 using (SqlCommand cmd = new SqlCommand(queryUpdateUrl, con))
                 {
@@ -59,7 +59,7 @@ namespace SpMedicalG_WebApi.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectById = "SELECT idUsuario, nome, email, senha, idPermissao FROM Usuarios WHERE idUsuario = @id";
+                string querySelectById = "SELECT idUsuario,idTipoUsuario, nome, email, senha, idPermissao FROM Usuarios WHERE idUsuario = @id";
 
                 con.Open();
 
@@ -80,7 +80,7 @@ namespace SpMedicalG_WebApi.Repositories
                             nomeUsuario = rdr[2].ToString(),
                             email = rdr[3].ToString(),
                             senha = rdr[4].ToString(),
-                            idPermissao = Convert.ToInt32(rdr[0]),
+                            idPermissao = Convert.ToInt32(rdr[5]),
                         };
                         //Se algo for encontrado, retorna o que foi buscado
                         return usuarioBuscado;
@@ -95,11 +95,11 @@ namespace SpMedicalG_WebApi.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string queryInsert = "INSERT INTO Usuarios(nomeUsuario), (idTipoUsuario),(email), (senha), (idPermissao) VALUES (@nomeUsuario),(@idTipoUsuario),(@email),(@senha), (@idPermissao)";
+                string queryInsert = "INSERT INTO Usuarios(nome), (idTipoUsuario),(email), (senha), (idPermissao) VALUES (@nomeUsuario),(@idTipoUsuario),(@email),(@senha), (@idPermissao)";
 
                 using (SqlCommand cmd = new SqlCommand(queryInsert, con))
                 {
-                    cmd.Parameters.AddWithValue("@nomeUsuario", novoUsuario.nomeUsuario);
+                    cmd.Parameters.AddWithValue("@nome", novoUsuario.nomeUsuario);
                     cmd.Parameters.AddWithValue("@idTipoUsuario", novoUsuario.idTipoUsuario);
                     cmd.Parameters.AddWithValue("@email", novoUsuario.email);
                     cmd.Parameters.AddWithValue("@senha", novoUsuario.senha);

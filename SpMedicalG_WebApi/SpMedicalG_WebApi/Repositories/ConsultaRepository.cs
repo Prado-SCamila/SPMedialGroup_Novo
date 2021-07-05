@@ -11,7 +11,7 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class ConsultaRepository : IConsultaRepository
     {
-        private string stringConexao = "Data Source=DESKTOP-840P8H6; initial catalog=SPmed;user id=sa;pwd=miladori23";
+        private string stringConexao = "Data Source=LAB08DESK1601\\SQLEXPRESS; initial catalog=SPmed; user id=sa;pwd=sa132";
 
         
         
@@ -55,12 +55,13 @@ namespace SpMedicalG_WebApi.Repositories
             }
         }
 
+        //Método para paciente buscar consultas dele no sistema
         public ConsultasDomain BuscaConsulta(int id)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
+                //??????
                 string querySelectById = "SELECT dataConsulta AS [Data da Consulta], nomeMedico AS[Médico], situacao AS[Status] FROM Consultas INNER JOIN Prontuarios ON Prontuarios.idProntuario = Consultas.idProntuario INNER JOIN Usuarios ON Usuarios.idUsuario = Consultas.idUsuario INNER JOIN Situacao ON Situacao.idSituacao = Consultas.idSituacao INNER JOIN Medicos ON Medicos.idMedico = Consultas.idMedico WHERE nome = @nome";
-
 
                 con.Open();
 
@@ -75,15 +76,21 @@ namespace SpMedicalG_WebApi.Repositories
                     {
                         ConsultasDomain consultasPaciente = new ConsultasDomain()
                         {
-                            idConsulta =Convert.ToInt32(xx[0]),
-                            idProntuario= Convert.ToInt32(xx[1]),
-                            idMedico = Convert.ToInt32(xx[2]),
-                            dataConsulta = Convert.ToDateTime(xx[3]),
-                            idSituacao = Convert.ToInt32(xx[4]),
-                            descricao =xx[5].ToString(),
-                            idUsuario = Convert.ToInt32(xx[6]),
-                            // Ver se dá pra colocar propriedades de outras tabelas ou n precisa
-                            //Terminar no controller esse metodo e fazer tokens.
+                            dataConsulta = Convert.ToDateTime(xx[0]),
+                        
+
+                            medico = new MedicosDomain()
+                            {
+                               nomeMedico = xx[1].ToString()
+                            },
+
+                            situacao = new SituacaoDomain()
+                            {
+                                situacao = xx[2].ToString(),
+                            },
+
+
+                           //Terminar no controller esse metodo e fazer tokens.
 
                         };
                         return consultasPaciente;
@@ -100,7 +107,7 @@ namespace SpMedicalG_WebApi.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectById = "SELECT idConsulta,idProntuario, dataConsulta, idSituacao,descricao,idUsuario FROM Consultas WHERE idMedico = @id";
+                string querySelectById = "SELECT nomeUsuario, dataConsulta, situacao ,descricao, FROM Consultas WHERE idMedico = @id";
 
                 con.Open();
 
@@ -116,14 +123,22 @@ namespace SpMedicalG_WebApi.Repositories
                     {
                         ConsultasDomain consultaBuscada = new ConsultasDomain()
                         {
-                            idConsulta = Convert.ToInt32(rdr[0]),
-                            idProntuario = Convert.ToInt32(rdr[1]),
-                            idMedico = Convert.ToInt32(rdr[2]),
-                            dataConsulta = Convert.ToDateTime(rdr[3]),
-                            idSituacao = Convert.ToInt32(rdr[4]),
-                            descricao = rdr[5].ToString(),
-                            idUsuario = Convert.ToInt32(rdr[6])
+                            nomeUsuario = new UsuariosDomain
+                            {
+                                nomeUsuario = rdr[0].ToString(),
+                            },
+
+                            dataConsulta = Convert.ToDateTime(rdr[1]),
+                            
+                            situacao = new SituacaoDomain
+                            {
+                                situacao = rdr[2].ToString(),
+                            },
+
+                            descricao = rdr[3].ToString(),
+                            
                         };
+
                         //Se algo for encontrado, retorna o que foi buscado
                         return consultaBuscada;
                     }
@@ -181,7 +196,7 @@ namespace SpMedicalG_WebApi.Repositories
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
 
-                string querySelectAll = "SELECT idUsuario,idConsulta,idProntuario, idMedico, dataConsulta, idsituacao, descricao FROM Consultas";
+                string querySelectAll = "SELECT idConsulta, idProntuario, idMedico, dataConsulta, idsituacao ,descricao ,idUsuario  FROM Consultas";
 
                 //abre a conexão com o bco de dados
                 con.Open();
