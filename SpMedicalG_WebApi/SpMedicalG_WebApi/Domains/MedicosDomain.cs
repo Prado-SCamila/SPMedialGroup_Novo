@@ -12,5 +12,6 @@ namespace SpMedicalG_WebApi.Domains
         public int idEspecialidade { get; set; }
         public int idClinica { get; set; }
         public string crm { get; set; }
+        public string nomeMedico { get; set; }
     }
 }

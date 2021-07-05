@@ -7,6 +7,6 @@
     "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Domains",
     "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Repositories"
   ],
-  "SelectedNode": "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Domains\\ProntuariosDomain.cs",
+  "SelectedNode": "\\SpMedicalG_WebApi\\SpMedicalG_WebApi\\Startup.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SpMedicalG_WebApi.Domains;
 using SpMedicalG_WebApi.Interfaces;
@@ -33,6 +34,8 @@ namespace SpMedicalG_WebApi.Controllers
         /// Lista todos os usuarios
         /// </summary>
         /// <returns> Retorna uma Lista e um Status Code</returns>
+
+        [Authorize(Roles = "administrador")]
         [HttpGet]
         public IActionResult Get()
         {
@@ -41,6 +44,8 @@ namespace SpMedicalG_WebApi.Controllers
             // retorna o status code ok e uma lista no formato json
             return Ok(listaUsuarios);
         }
+
+        [Authorize(Roles ="administrador")]
         //metodo cadastrar irá retornar status code 201- created
         [HttpPost]
         public IActionResult Post(UsuariosDomain novoUsuario)
@@ -51,6 +56,7 @@ namespace SpMedicalG_WebApi.Controllers
             return StatusCode(201);
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
 
@@ -60,6 +66,7 @@ namespace SpMedicalG_WebApi.Controllers
             //vai retornar um NO-CONTENT
             return StatusCode(204);
         }
+        [Authorize(Roles = "administrador")]
         [HttpGet("{id}")]
 
         public IActionResult GetById(int id)
@@ -73,6 +80,7 @@ namespace SpMedicalG_WebApi.Controllers
             return Ok(usuarioBuscado);
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpPut("{id}")]
         public IActionResult PutUrl(int id, UsuariosDomain usuarioAtualizado)
         {
@@ -101,6 +109,7 @@ namespace SpMedicalG_WebApi.Controllers
             }
         }
 
+        [Authorize(Roles = "administrador")]
         //associado ao método AtualizarIdCorpo no repositório
         [HttpPut]
         public IActionResult PutIdBody(UsuariosDomain usuarioAtualizado)

@@ -12,12 +12,13 @@ namespace SpMedicalG_WebApi.Domains
         public int idProntuario { get; set; }
 
         public int idMedico { get; set; }
-
+       
         public DateTime dataConsulta { get; set; }
 
         public int idSituacao { get; set; }
 
         public string  descricao { get; set; }
+        public int idUsuario { get; set; }
 
     }
 }

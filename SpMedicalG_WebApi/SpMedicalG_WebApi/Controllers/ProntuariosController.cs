@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SpMedicalG_WebApi.Domains;
 using SpMedicalG_WebApi.Interfaces;
@@ -34,6 +35,7 @@ namespace SpMedicalG_WebApi.Controllers
             return Ok(listaProntuarios);
         }
 
+        [Authorize(Roles = "medico")]
         [HttpPost]
         public IActionResult Post(ProntuariosDomain novoProntuario)
         {
@@ -41,7 +43,7 @@ namespace SpMedicalG_WebApi.Controllers
 
             return StatusCode(201);
         }
-
+        [Authorize(Roles = "medico")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
 
@@ -52,6 +54,7 @@ namespace SpMedicalG_WebApi.Controllers
             return StatusCode(204);
         }
 
+        [Authorize(Roles = "administrador, medico")]
         [HttpGet("{id}")]
 
         public IActionResult GetById(int id)
@@ -65,6 +68,7 @@ namespace SpMedicalG_WebApi.Controllers
             return Ok(prontuarioBuscado);
         }
 
+        [Authorize(Roles = "medico")]
         [HttpPut("{id}")]
         public IActionResult PutUrl(int id, ProntuariosDomain prontuarioAtualizado)
         {
@@ -92,7 +96,8 @@ namespace SpMedicalG_WebApi.Controllers
                 return BadRequest();
             }
         }
-            [HttpPut]
+        [Authorize(Roles = "medico")]
+        [HttpPut]
             public IActionResult PutIdBody(ProntuariosDomain prontuarioAtualizado)
             {
                 //cria o objeto usuarioBuscado que irá receber o valor buscado no bco de dados

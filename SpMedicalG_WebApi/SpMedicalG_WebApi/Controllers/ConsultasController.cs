@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SpMedicalG_WebApi.Repositories;
 using SpMedicalG_WebApi.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SpMedicalG_WebApi.Controllers
 {
@@ -34,6 +35,7 @@ namespace SpMedicalG_WebApi.Controllers
             return Ok(listaConsultas);
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpPost]
         public IActionResult Post(ConsultasDomain novaConsulta)
         {
@@ -42,6 +44,7 @@ namespace SpMedicalG_WebApi.Controllers
             return StatusCode(201);
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
 
@@ -52,6 +55,7 @@ namespace SpMedicalG_WebApi.Controllers
             return StatusCode(204);
         }
 
+        [Authorize(Roles = "medico")]
         [HttpGet("{id}")]
 
         public IActionResult GetById(int id)
@@ -73,6 +77,7 @@ namespace SpMedicalG_WebApi.Controllers
         /// <returns> no content</returns>
         //colocar o id aqui na rota pois o método precisa do id como parametro
 
+        [Authorize(Roles = "administrador")]
         [HttpPut("{id}")]
         public IActionResult PutUrl(int id, ConsultasDomain consultaAtualizada)
         {
@@ -102,6 +107,7 @@ namespace SpMedicalG_WebApi.Controllers
             }
 
         }
+        [Authorize(Roles = "medico")]
         [HttpPut]
         public IActionResult PutIdBody(ConsultasDomain consultaAtualizada)
         {

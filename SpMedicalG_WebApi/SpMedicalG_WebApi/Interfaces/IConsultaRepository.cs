@@ -10,6 +10,8 @@ namespace SpMedicalG_WebApi.Interfaces
     {
         List<ConsultasDomain> ListarTodos();
 
+        ConsultasDomain BuscaConsulta(int id); // método para paciente ver suas consultas
+      
         ConsultasDomain BuscarPorId (int id);
 
         void Cadastrar(ConsultasDomain novaConsulta);
