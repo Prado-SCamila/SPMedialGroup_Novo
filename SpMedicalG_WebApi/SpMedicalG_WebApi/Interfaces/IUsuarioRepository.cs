@@ -12,6 +12,8 @@ namespace SpMedicalG_WebApi.Interfaces
 
         UsuariosDomain BuscarPorId(int id);
 
+        UsuariosDomain Login(string email, string senha);
+
         void Cadastrar(UsuariosDomain novoUsuario);
 
         void AtualizarIdCorpo(UsuariosDomain usuario);

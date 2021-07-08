@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace SpMedicalG_WebApi.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private string stringConexao = "Data Source= LAB08DESK1601\\SQLEXPRESS; initial catalog= SPmed;user id=sa;pwd=sa132";
+        private string stringConexao = "Data Source= DESKTOP-840P8H6; initial catalog= SPmed;user id=sa;pwd=miladori23";
         /// <summary>
         /// Atualiza um usuario passando um id pelo corpo da requisição
         /// </summary>
@@ -174,13 +175,13 @@ namespace SpMedicalG_WebApi.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelect = "SELECT email, senha, permissao FROM  Usuarios WHERE email = @email AND senha = @senha";
+                string querySelect = "SELECT email, senha FROM  Usuarios WHERE email = @email AND senha = @senha";
 
                 using (SqlCommand cmd = new SqlCommand(querySelect, con))
                 {
                     cmd.Parameters.AddWithValue("@email", email);
                     cmd.Parameters.AddWithValue("@senha", senha);
-
+                                      
                     con.Open();
 
                     SqlDataReader rdr = cmd.ExecuteReader();
@@ -192,11 +193,7 @@ namespace SpMedicalG_WebApi.Repositories
                             email = rdr[0].ToString(),
                             senha = rdr[1].ToString(),
                             //crio um objeto do tipo permissao para receber os valores do atributo permissao de outra entidade(classe ou tabela do bco)
-
-                            permissao = new TipoPermissao()
-                            {
-                                permissao = rdr[2].ToString(),
-                            },
+                            
                         };
                         return usuarioBuscado;
                     } 

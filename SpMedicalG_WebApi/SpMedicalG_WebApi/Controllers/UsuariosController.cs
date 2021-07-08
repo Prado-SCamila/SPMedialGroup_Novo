@@ -1,19 +1,22 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SpMedicalG_WebApi.Domains;
 using SpMedicalG_WebApi.Interfaces;
 using SpMedicalG_WebApi.Repositories;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SpMedicalG_WebApi.Controllers
 {
-   
+
     //Controller respomsável pelos endpoints url
-    
+
     //Define que a resposta da API será no formato Json
     [Produces("Application/json")]
     //Define que a rota de uma requisição será no formato domínio( www.site.com.br)/api/nomecontroller
@@ -45,8 +48,9 @@ namespace SpMedicalG_WebApi.Controllers
             return Ok(listaUsuarios);
         }
 
-        [Authorize(Roles ="administrador")]
+        //[Authorize(Roles ="administrador")]
         //metodo cadastrar irá retornar status code 201- created
+        [Authorize(Roles = "administrador")]
         [HttpPost]
         public IActionResult Post(UsuariosDomain novoUsuario)
         {
@@ -108,6 +112,51 @@ namespace SpMedicalG_WebApi.Controllers
                 return BadRequest();
             }
         }
+        // método para fazer Login
+
+        [HttpPost]
+        public IActionResult Login(UsuariosDomain login)
+        {
+            UsuariosDomain usuarioBuscado = _usuarioRepository.Login(login.email, login.senha);
+
+            if (usuarioBuscado == null)
+            {
+                return NotFound("Email ou senha inválido");
+            }
+
+            //inserir token
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Email, usuarioBuscado.email.ToString()),
+
+                new Claim(JwtRegisteredClaimNames.Jti, usuarioBuscado.idUsuario.ToString()),
+
+                new Claim(ClaimTypes.Role, usuarioBuscado.permissao.ToString()),
+            };
+
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("Usuario-chave-autenticacao"));
+
+            //Define as credenciais do Token
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            //Gera o Token
+            var token = new JwtSecurityToken
+                (
+                issuer: "SpMedicalG_WebApi", //emissor do Token
+                audience: "SpMedicalG_WebApi", //destinatario do token
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(10),
+                signingCredentials: creds
+                );
+
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token)
+            });
+        }
+    
+
+
 
         [Authorize(Roles = "administrador")]
         //associado ao método AtualizarIdCorpo no repositório

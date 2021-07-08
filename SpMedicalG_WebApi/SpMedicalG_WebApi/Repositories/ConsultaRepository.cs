@@ -11,7 +11,7 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class ConsultaRepository : IConsultaRepository
     {
-        private string stringConexao = "Data Source=LAB08DESK1601\\SQLEXPRESS; initial catalog=SPmed; user id=sa;pwd=sa132";
+        private string stringConexao = "Data Source= DESKTOP-840P8H6; initial catalog=SPmed; user id=sa;pwd= miladori23";
 
         
         
