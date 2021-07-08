@@ -11,7 +11,7 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class ConsultaRepository : IConsultaRepository
     {
-        private string stringConexao = "Data Source= DESKTOP-840P8H6; initial catalog=SPmed; user id=sa;pwd= miladori23";
+        private string stringConexao = "Data Source= LAB08DESK1601\\SQLEXPRESS; initial catalog=SPmed; user id=sa; pwd= sa132";
 
         
         
@@ -35,15 +35,15 @@ namespace SpMedicalG_WebApi.Repositories
             }
         }
 
-        public void AtualizarUrl(int id, ConsultasDomain consulta)
+        public ConsultasDomain AtualizarUrl(int id, ConsultasDomain consulta)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string queryUpdateUrl = "UPDATE Consultas SET situacao = @situacao WHERE idConsulta = @ID";
+                string queryUpdateUrl = "UPDATE Consultas SET idSituacao = @idsituacao WHERE idConsulta = @ID";
 
                 using (SqlCommand cmd = new SqlCommand(queryUpdateUrl, con))
                 {
-                    cmd.Parameters.AddWithValue("@ID", id);
+                    cmd.Parameters.AddWithValue("@idConsulta", consulta.idConsulta);
                     cmd.Parameters.AddWithValue("@idSituacao", consulta.idSituacao);
 
                     con.Open();
@@ -52,6 +52,9 @@ namespace SpMedicalG_WebApi.Repositories
                     cmd.ExecuteNonQuery();
                 }
 
+                ConsultasDomain consultaAtualizada = BuscaConsulta(id);
+
+                return consultaAtualizada;
             }
         }
 
@@ -107,7 +110,7 @@ namespace SpMedicalG_WebApi.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectById = "SELECT nomeUsuario, dataConsulta, situacao ,descricao, FROM Consultas WHERE idMedico = @id";
+                string querySelectById = "SELECT idUsuario, nomeUsuario, dataConsulta, situacao ,descricao, FROM Consultas WHERE idMedico = @id";
 
                 con.Open();
 
@@ -229,7 +232,7 @@ namespace SpMedicalG_WebApi.Repositories
                 }
             }
             return listaConsultas;
-        } 
+        }
     }
 }
 

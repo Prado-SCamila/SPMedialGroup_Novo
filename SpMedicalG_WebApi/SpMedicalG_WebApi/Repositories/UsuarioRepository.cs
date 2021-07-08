@@ -11,7 +11,7 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private string stringConexao = "Data Source= DESKTOP-840P8H6; initial catalog= SPmed;user id=sa;pwd=miladori23";
+        private string stringConexao = "Data Source= LAB08DESK1601\\SQLEXPRESS; initial catalog= SPmed; user id=sa; pwd=sa132";
         /// <summary>
         /// Atualiza um usuario passando um id pelo corpo da requisição
         /// </summary>
@@ -175,12 +175,14 @@ namespace SpMedicalG_WebApi.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelect = "SELECT email, senha FROM  Usuarios WHERE email = @email AND senha = @senha";
+                string querySelect = "SELECT idUsuario, email, permissao FROM Usuarios INNER JOIN Tipo_Permissao ON Tipo_Permissao.idPermissao = Usuarios.idPermissao WHERE email = @email AND senha = senha";
 
                 using (SqlCommand cmd = new SqlCommand(querySelect, con))
                 {
+                    //Atribui valores apenas aos dados que o usuario insere no sistema
                     cmd.Parameters.AddWithValue("@email", email);
                     cmd.Parameters.AddWithValue("@senha", senha);
+                    
                                       
                     con.Open();
 
@@ -190,8 +192,15 @@ namespace SpMedicalG_WebApi.Repositories
                     {
                         UsuariosDomain usuarioBuscado = new UsuariosDomain()
                         {
-                            email = rdr[0].ToString(),
-                            senha = rdr[1].ToString(),
+                            idUsuario = Convert.ToInt32(rdr[0]),
+
+                            email = rdr[1].ToString(),
+
+                            permissao = new TipoPermissao()
+                            {
+                                permissao = rdr[2].ToString(),
+                            },
+                            
                             //crio um objeto do tipo permissao para receber os valores do atributo permissao de outra entidade(classe ou tabela do bco)
                             
                         };

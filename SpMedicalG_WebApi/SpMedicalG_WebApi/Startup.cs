@@ -33,7 +33,9 @@ namespace SpMedicalG_WebApi
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("Usuario-chave-autenticacao")),
-                        ClockSkew = TimeSpan.FromMinutes(10)
+                        ClockSkew = TimeSpan.FromMinutes(10),
+                        ValidIssuer = "SpMedicalG_WebApi",
+                        ValidAudience = "SpMedicalG_WebApi",
                     };
                 });
             
@@ -50,8 +52,9 @@ namespace SpMedicalG_WebApi
             app.UseRouting();
 
             //Adicionar este código para autorizacao e autenticacao das chaves token
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {

@@ -39,7 +39,8 @@ namespace SpMedicalG_WebApi.Controllers
         /// <returns> Retorna uma Lista e um Status Code</returns>
 
         [Authorize(Roles = "administrador")]
-        [HttpGet]
+    
+        [HttpGet("lista_usuarios")]
         public IActionResult Get()
         {
             List<UsuariosDomain> listaUsuarios = _usuarioRepository.ListarTodos();
@@ -51,7 +52,7 @@ namespace SpMedicalG_WebApi.Controllers
         //[Authorize(Roles ="administrador")]
         //metodo cadastrar irá retornar status code 201- created
         [Authorize(Roles = "administrador")]
-        [HttpPost]
+        [HttpPost("cadastrar_usuario")]
         public IActionResult Post(UsuariosDomain novoUsuario)
         {
             // o objeto que contém os métodos irá chamar o método cadastrar
@@ -70,6 +71,8 @@ namespace SpMedicalG_WebApi.Controllers
             //vai retornar um NO-CONTENT
             return StatusCode(204);
         }
+
+
         [Authorize(Roles = "administrador")]
         [HttpGet("{id}")]
 
@@ -114,7 +117,8 @@ namespace SpMedicalG_WebApi.Controllers
         }
         // método para fazer Login
 
-        [HttpPost]
+        
+        [HttpPost("login")]
         public IActionResult Login(UsuariosDomain login)
         {
             UsuariosDomain usuarioBuscado = _usuarioRepository.Login(login.email, login.senha);

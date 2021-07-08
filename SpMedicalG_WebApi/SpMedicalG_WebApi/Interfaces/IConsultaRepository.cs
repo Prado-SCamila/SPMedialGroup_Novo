@@ -18,7 +18,7 @@ namespace SpMedicalG_WebApi.Interfaces
 
         void AtualizarIdCorpo(ConsultasDomain consulta);
 
-        void AtualizarUrl(int id, ConsultasDomain consulta);
+        ConsultasDomain AtualizarUrl(int id, ConsultasDomain consulta);
 
         void Deletar(int id);
     }

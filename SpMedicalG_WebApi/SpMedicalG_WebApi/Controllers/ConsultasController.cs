@@ -26,8 +26,8 @@ namespace SpMedicalG_WebApi.Controllers
             //crio o objeto
             _consultaRepository = new ConsultaRepository();
         }
-
-        [HttpGet]
+        
+        [HttpGet("lista_consultas")]//ok
         public IActionResult Get()
         {
             List<ConsultasDomain> listaConsultas = _consultaRepository.ListarTodos();
@@ -36,7 +36,7 @@ namespace SpMedicalG_WebApi.Controllers
         }
 
         [Authorize(Roles = "administrador")]
-        [HttpPost]
+        [HttpPost("cadastrar_consultas")]
         public IActionResult Post(ConsultasDomain novaConsulta)
         {
             _consultaRepository.Cadastrar(novaConsulta);
@@ -56,6 +56,7 @@ namespace SpMedicalG_WebApi.Controllers
         }
 
         [Authorize(Roles = "medico")]
+        [Route("buscar_consulta")]
         [HttpGet("{id}")]
 
         public IActionResult GetById(int id)
@@ -81,14 +82,14 @@ namespace SpMedicalG_WebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult PutUrl(int id, ConsultasDomain consultaAtualizada)
         {
-            ConsultasDomain consultaBuscada = _consultaRepository.BuscarPorId(id);
+            ConsultasDomain consultaBuscada = _consultaRepository.AtualizarUrl(id, consultaAtualizada);
 
             if (consultaBuscada == null)
             {
                 return NotFound
                     (new
                     {
-                        mensagem = "Usuario não encontrado",
+                        mensagem = "consulta não encontrada",
                         erro = true
                     }
                     );
@@ -108,12 +109,12 @@ namespace SpMedicalG_WebApi.Controllers
 
         }
 
-
         //ITEM 7 - FUNCIONALIDADE Método para paciente encontrar somente as suas próprias consultas agendadas no sistema
         [HttpGet("{id}")]
+        [Route("minhasconsultas")]
         public IActionResult GetId(int id) 
         {
-            ConsultasDomain consultasPaciente = _consultaRepository.BuscarPorId(id);
+            ConsultasDomain consultasPaciente = _consultaRepository.BuscaConsulta(id);
             
             if(consultasPaciente==null)
             {
@@ -125,7 +126,7 @@ namespace SpMedicalG_WebApi.Controllers
 
 
         [Authorize(Roles = "medico")]
-        [HttpPut]
+        [HttpPut("atualizar_consulta")]
         public IActionResult PutIdBody(ConsultasDomain consultaAtualizada)
         {
             //cria o objeto usuarioBuscado que irá receber o valor buscado no bco de dados
