@@ -10,7 +10,7 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class ProntuarioRepository : IProntuarioRepository
     {
-        private string stringConexao = "Data Source=LAB08DESK1601\\SQLEXPRESS; initial catalog= SPmed;user id=sa;pwd= sa132";
+        private string stringConexao = "Data Source= DESKTOP-840P8H6; initial catalog= SPmed;user id=sa;pwd= miladori23";
 
 
         public void AtualizarIdCorpo(ProntuariosDomain prontuario)
@@ -105,7 +105,7 @@ namespace SpMedicalG_WebApi.Repositories
 
                 using (SqlCommand cmd = new SqlCommand(queryInsert, con))
                 {
-                    //preciso de um metodo cadastrar pra cada campo da tabela prontuarios?
+                   
                     cmd.Parameters.AddWithValue("@cpf", prontuario.CPF);
                     cmd.Parameters.AddWithValue("@rg", prontuario.RG);
                     cmd.Parameters.AddWithValue("@telefone", prontuario.telefone);

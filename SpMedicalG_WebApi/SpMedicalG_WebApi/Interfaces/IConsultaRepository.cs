@@ -12,13 +12,11 @@ namespace SpMedicalG_WebApi.Interfaces
 
         ConsultasDomain BuscaConsulta(int id); // método para paciente ver suas consultas
       
-        ConsultasDomain BuscarPorId (int id);
+        ConsultasDomain BuscarPorId (int id);// método para médico ver seus agendamentos
 
-        void Cadastrar(ConsultasDomain novaConsulta);
+        void Cadastrar(ConsultasDomain novaConsulta);// Método para ADM cadastrar nova consulta
 
-        void AtualizarIdCorpo(ConsultasDomain consulta);
-
-        ConsultasDomain AtualizarUrl(int id, ConsultasDomain consulta);
+        ConsultasDomain AtualizarDescricao (int id, ConsultasDomain consulta);
 
         void Deletar(int id);
     }
