@@ -11,41 +11,63 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class ConsultaRepository : IConsultaRepository
     {
-        private string stringConexao = "Data Source= LAB08DESK1601\\SQLEXPRESS; initial catalog=SPmed; user id=sa; pwd= sa132";
+        private string stringConexao = "Data Source= DESKTOP-840P8H6; initial catalog=SPmed; user id=sa; pwd= miladori23";
 
-        
-        
-        //Método para o médico incluir descricao na consulta digitando o id do prontuario do paciente.
-        public void AtualizarIdCorpo(ConsultasDomain consulta)
+        //----------------------------------------------------------------------------------------------
+        // 
+        public List<ConsultasDomain> ListarTodos()
         {
+            List<ConsultasDomain> listaConsultas = new List<ConsultasDomain>();
+
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string queryUpdateIdBody = "UPDATE Consultas SET descricao = @descricao WHERE idProntuario = @ID";
 
-                using (SqlCommand cmd = new SqlCommand(queryUpdateIdBody, con))
+                string querySelectAll = "SELECT idConsulta, idProntuario, idMedico, dataConsulta, idsituacao ,descricao ,idUsuario  FROM Consultas";
+
+                //abre a conexão com o bco de dados
+                con.Open();
+                //Declara o objeto que vai ler a tabela no bco de dados
+                SqlDataReader rdr;
+
+                using (SqlCommand cmd = new SqlCommand(querySelectAll, con))
                 {
-                    
-                    cmd.Parameters.AddWithValue("@ID", consulta.idProntuario);
-                    cmd.Parameters.AddWithValue("@descricao", consulta.descricao);
+                    rdr = cmd.ExecuteReader();
 
-                    con.Open();
+                    //enquanto houverem registros para serem lidos, o laço se repete
+                    while (rdr.Read())
+                    {
+                        ConsultasDomain consulta = new ConsultasDomain();
 
-                    cmd.ExecuteNonQuery();
+                        {
+                            consulta.idConsulta = Convert.ToInt32(rdr[0]);
+                            consulta.idProntuario = Convert.ToInt32(rdr[1]);
+                            consulta.idMedico = Convert.ToInt32(rdr[2]);
+                            consulta.dataConsulta = Convert.ToDateTime(rdr[3]);
+                            consulta.idSituacao = Convert.ToInt32(rdr[4]); ;
+                            consulta.descricao = rdr[5].ToString();
+                            consulta.idUsuario = Convert.ToInt32(rdr[6]);
+
+                        };
+
+                        listaConsultas.Add(consulta);
+                    }
                 }
             }
+            return listaConsultas;
         }
-
-        public ConsultasDomain AtualizarUrl(int id, ConsultasDomain consulta)
+        //------------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------
+        //--------FUNCIONALIDADE 6 - MÉDICO INCLUI DESCRIÇÃO NA CONSULTA
+        public ConsultasDomain AtualizarDescricao (int id, ConsultasDomain consulta)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string queryUpdateUrl = "UPDATE Consultas SET idSituacao = @idsituacao WHERE idConsulta = @ID";
+                string queryUpdateUrl = "UPDATE Consultas SET descricao = @descricao WHERE idProntuario = @ID";
 
                 using (SqlCommand cmd = new SqlCommand(queryUpdateUrl, con))
                 {
-                    cmd.Parameters.AddWithValue("@idConsulta", consulta.idConsulta);
-                    cmd.Parameters.AddWithValue("@idSituacao", consulta.idSituacao);
-
+                    cmd.Parameters.AddWithValue("@descricao", consulta.descricao);
+                    
                     con.Open();
 
                     //executa o comando
@@ -57,13 +79,14 @@ namespace SpMedicalG_WebApi.Repositories
                 return consultaAtualizada;
             }
         }
-
-        //Método para paciente buscar consultas dele no sistema
+        
+        //--------------------------------------------------------------------------------------------------
+       //Método para paciente buscar consultas dele no sistema
         public ConsultasDomain BuscaConsulta(int id)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                //??????
+                
                 string querySelectById = "SELECT dataConsulta AS [Data da Consulta], nomeMedico AS[Médico], situacao AS[Status] FROM Consultas INNER JOIN Prontuarios ON Prontuarios.idProntuario = Consultas.idProntuario INNER JOIN Usuarios ON Usuarios.idUsuario = Consultas.idUsuario INNER JOIN Situacao ON Situacao.idSituacao = Consultas.idSituacao INNER JOIN Medicos ON Medicos.idMedico = Consultas.idMedico WHERE nome = @nome";
 
                 con.Open();
@@ -104,13 +127,13 @@ namespace SpMedicalG_WebApi.Repositories
             }
                
         }
-
+        //------------------------------------------------------------------------------------------------------
         // Método para o médico ver os agendamentos vinculados a ele
         public ConsultasDomain BuscarPorId(int id)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectById = "SELECT idUsuario, nomeUsuario, dataConsulta, situacao ,descricao, FROM Consultas WHERE idMedico = @id";
+                string querySelectById = "SELECT  nome, dataConsulta, situacao ,descricao FROM Consultas INNER JOIN Usuarios ON Usuarios.idUsuario = Consultas.idUsuario INNER JOIN Situacao ON Situacao.idSituacao = Consultas.idSituacao WHERE idMedico = 3";
 
                 con.Open();
 
@@ -118,12 +141,13 @@ namespace SpMedicalG_WebApi.Repositories
 
                 using (SqlCommand cmd = new SqlCommand(querySelectById, con))
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@idMedico", id);
 
                     rdr = cmd.ExecuteReader();
 
                     if (rdr.Read())
                     {
+                        //crio um objeto do tipo ConsultasDomain para conter os valores lidos
                         ConsultasDomain consultaBuscada = new ConsultasDomain()
                         {
                             nomeUsuario = new UsuariosDomain
@@ -152,17 +176,24 @@ namespace SpMedicalG_WebApi.Repositories
             }
         }
     
-
+        //----------------------------------------------------------------------------------------------------------
+        // Método para ADM cadastrar nova consulta
+        //
         public void Cadastrar(ConsultasDomain novaConsulta)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string queryInsert = "INSERT INTO Consultas(dataConsulta) VALUES (@dataConsulta)";
+                string queryInsert = "INSERT INTO Consultas(idConsulta, idProntuario, idMedico, dataConsulta, idSituacao, idUsuario) VALUES (@idConsulta, @idProntuario, @idMedico, @dataConsulta, @idSituacao, @idUsuario)";
 
                 using (SqlCommand cmd = new SqlCommand(queryInsert, con))
                 {
                     //passa o valor inserido para o parametro 
+                    cmd.Parameters.AddWithValue("@idConsulta", novaConsulta.idConsulta);
+                    cmd.Parameters.AddWithValue("@idProntuario", novaConsulta.idProntuario);
+                    cmd.Parameters.AddWithValue("@idMedico", novaConsulta.idMedico);
                     cmd.Parameters.AddWithValue("@dataConsulta", novaConsulta.dataConsulta);
+                    cmd.Parameters.AddWithValue("@idSituacao", novaConsulta.idSituacao);
+                    cmd.Parameters.AddWithValue("@idUsuario", novaConsulta.idUsuario);
 
                     //abre a conexao
                     con.Open();
@@ -192,47 +223,7 @@ namespace SpMedicalG_WebApi.Repositories
             }
         }
 
-        public List<ConsultasDomain> ListarTodos()
-        {
-            List<ConsultasDomain> listaConsultas = new List<ConsultasDomain>();
-
-            using (SqlConnection con = new SqlConnection(stringConexao))
-            {
-
-                string querySelectAll = "SELECT idConsulta, idProntuario, idMedico, dataConsulta, idsituacao ,descricao ,idUsuario  FROM Consultas";
-
-                //abre a conexão com o bco de dados
-                con.Open();
-                //Declara o objeto que vai ler a tabela no bco de dados
-                SqlDataReader rdr;
-
-                using (SqlCommand cmd = new SqlCommand(querySelectAll, con))
-                {
-                    rdr = cmd.ExecuteReader();
-
-                    //enquanto houverem registros para serem lidos, o laço se repete
-                    while (rdr.Read())
-                    {
-                        ConsultasDomain consulta = new ConsultasDomain();
-
-                        {
-                           
-                            consulta.idConsulta = Convert.ToInt32(rdr[0]);
-                            consulta.idProntuario = Convert.ToInt32(rdr[1]);
-                            consulta.idMedico = Convert.ToInt32(rdr[2]); 
-                            consulta.dataConsulta = Convert.ToDateTime(rdr[3]);
-                            consulta.idSituacao = Convert.ToInt32(rdr[4]); ;
-                            consulta.descricao =rdr[5].ToString();
-                            consulta.idUsuario = Convert.ToInt32(rdr[6]);
-
-                        };
-
-                        listaConsultas.Add(consulta);
-                    }
-                }
-            }
-            return listaConsultas;
-        }
+        
     }
 }
 

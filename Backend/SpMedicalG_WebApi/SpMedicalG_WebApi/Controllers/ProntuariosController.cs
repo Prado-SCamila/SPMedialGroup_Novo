@@ -27,7 +27,7 @@ namespace SpMedicalG_WebApi.Controllers
             _prontuarioRepository = new ProntuarioRepository();
         }
 
-        [HttpGet]
+        [HttpGet("Lista_de_pacientes")]
         public IActionResult Get()
         {
             List<ProntuariosDomain> listaProntuarios = _prontuarioRepository.ListarTodos();

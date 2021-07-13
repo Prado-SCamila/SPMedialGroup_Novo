@@ -33,24 +33,25 @@ namespace SpMedicalG_WebApi.Controllers
             //crio o objeto que vai conter os metodos (instancio)
             _usuarioRepository = new UsuarioRepository();
         }
-        /// <summary>
-        /// Lista todos os usuarios
-        /// </summary>
-        /// <returns> Retorna uma Lista e um Status Code</returns>
+        
 
+        //------------------------------------------------------------------------------------------------------
+        //------------------------------------
         [Authorize(Roles = "administrador")]
     
-        [HttpGet("lista_usuarios")]
+        [HttpGet("lista_de_medicos")]
         public IActionResult Get()
         {
-            List<UsuariosDomain> listaUsuarios = _usuarioRepository.ListarTodos();
+            List<UsuariosDomain> listaUsuarios = _usuarioRepository.ListarMedicos();
 
             // retorna o status code ok e uma lista no formato json
             return Ok(listaUsuarios);
         }
 
-        //[Authorize(Roles ="administrador")]
-        //metodo cadastrar irá retornar status code 201- created
+
+        //--------------------------------------------------------------------------------------------------------
+        //--------------------FUNCIONALIDADE 1 - ADM CADASTRA NOVO USUÁRIO
+
         [Authorize(Roles = "administrador")]
         [HttpPost("cadastrar_usuario")]
         public IActionResult Post(UsuariosDomain novoUsuario)
@@ -60,6 +61,7 @@ namespace SpMedicalG_WebApi.Controllers
 
             return StatusCode(201);
         }
+
 
         [Authorize(Roles = "administrador")]
         [HttpDelete("{id}")]

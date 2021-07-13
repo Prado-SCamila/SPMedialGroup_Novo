@@ -12,12 +12,6 @@
             <param name="consultaAtualizada"></param>
             <returns> no content</returns>
         </member>
-        <member name="M:SpMedicalG_WebApi.Controllers.UsuariosController.Get">
-            <summary>
-            Lista todos os usuarios
-            </summary>
-            <returns> Retorna uma Lista e um Status Code</returns>
-        </member>
         <member name="M:SpMedicalG_WebApi.Repositories.UsuarioRepository.AtualizarIdCorpo(SpMedicalG_WebApi.Domains.UsuariosDomain)">
             <summary>
             Atualiza um usuario passando um id pelo corpo da requisição

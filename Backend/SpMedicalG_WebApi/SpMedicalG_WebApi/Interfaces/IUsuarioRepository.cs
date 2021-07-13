@@ -8,7 +8,7 @@ namespace SpMedicalG_WebApi.Interfaces
 {
     interface IUsuarioRepository
     {
-        List<UsuariosDomain> ListarTodos();
+        List<UsuariosDomain> ListarMedicos();
 
         UsuariosDomain BuscarPorId(int id);
 

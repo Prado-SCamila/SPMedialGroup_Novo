@@ -11,7 +11,7 @@ namespace SpMedicalG_WebApi.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private string stringConexao = "Data Source= LAB08DESK1601\\SQLEXPRESS; initial catalog= SPmed; user id=sa; pwd=sa132";
+        private string stringConexao = "Data Source= DESKTOP-840P8H6; initial catalog= SPmed; user id=sa; pwd= miladori23";//senha senai sa132
         /// <summary>
         /// Atualiza um usuario passando um id pelo corpo da requisição
         /// </summary>
@@ -130,16 +130,16 @@ namespace SpMedicalG_WebApi.Repositories
             }
         }
 
-        public List<UsuariosDomain> ListarTodos()
+        public List<UsuariosDomain> ListarMedicos()
         {
             //crio uma lista para ser lida
-            List<UsuariosDomain> listaUsuarios = new List<UsuariosDomain>();
+            List<UsuariosDomain> listaMedicos = new List<UsuariosDomain>();
             //Declaro a sql connection passando a string de conexao como parametro
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
 
                 //declaro a instrução a ser executada
-                string querySelectAll = "SELECT idUsuario,idTipoUsuario, nome, email, senha, idPermissao FROM Usuarios";
+                string querySelectAll = "SELECT  nomeMedico AS[Medico], Especialidades.nome AS[Especialidade] FROM Usuarios INNER JOIN Medicos ON Medicos.idUsuario = Usuarios.idUsuario INNER JOIN Especialidades ON Especialidades.idEspecialidade = Medicos.idEspecialidade WHERE idPermissao = 2";
 
                 //abre a conexão com o bco de dados
 
@@ -154,23 +154,30 @@ namespace SpMedicalG_WebApi.Repositories
                     //enquanto houverem registros para serem lidos, o laço se repete
                     while (rdr.Read())
                     {
-                        UsuariosDomain usuario = new UsuariosDomain();
+                        UsuariosDomain medico = new UsuariosDomain();
 
                         {
-                            usuario.idUsuario = Convert.ToInt32(rdr[0]);
-                            usuario.idTipoUsuario = Convert.ToInt32(rdr[1]);
-                            usuario.nomeUsuario = rdr[2].ToString();
-                            usuario.email = rdr[3].ToString();
-                            usuario.senha = rdr[4].ToString();
-                            usuario.idPermissao = Convert.ToInt32(rdr[5]);
+                            medico.nomeMedico = new MedicosDomain()
+                            {
+                                nomeMedico = rdr[0].ToString(),
+                            };
+
+                            medico.especialidade = new EspecialidadesDomain()
+                            {
+                                especialidade = rdr[1].ToString(),
+                            };
+                                                        
                         };
 
-                        listaUsuarios.Add(usuario);
+                        listaMedicos.Add(medico);
                     }
                 }
             }
-            return listaUsuarios;
+            return listaMedicos;
         }
+
+        
+
         public UsuariosDomain Login(string email, string senha)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
