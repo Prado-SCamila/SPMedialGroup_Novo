@@ -1,31 +1,67 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Route, BrowserRouter as Router, Switch} from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom';
 
+import { usuarioAutenticado, parseJwt } from './pages/services/auth';
+//--------------Páginas----------------------------------------------------------------
 import './index.css';
-
 import App from './pages/home/App';
-import Login from './pages/Login/Login';
-import NotFound from './pages/NotFound/NotFound';
+import Login from './pages/login/login';
+import NotFound from './pages/notFound/notFound';
+import Consulta from './pages/consultas/cadastroConsultas';
+import Consultaspac from './pages/consultas/minhasConsultas_pac';
+import Consultamed from './pages/consultas/minhasConsultas_med';
 import reportWebVitals from './reportWebVitals';
 
+  //-----------------------------------------------------------------------------------
+const PermissaoAdm = ({ component : Component }) => (
+  <Route 
+    render = { props => 
+      usuarioAutenticado() && parseJwt().role === "1" ?
+      <Component {...props} /> :
+      <Redirect to="/login" />
+    }
+  />
+)
 
-const rounting = (
+const PermissaoMed = ({ component : Component }) => (
+  <Route 
+    render = { props => 
+      usuarioAutenticado() && (parseJwt().role === "2") ?
+      <Component {...props} /> :
+      <Redirect to="/login" />
+    }
+  />
+)
+
+
+const PermissaoPac = ({ component : Component }) => (
+  <Route 
+    render = { props => 
+      usuarioAutenticado() && (parseJwt().role === "3") ?
+      <Component {...props} /> :
+      <Redirect to="/login" />
+    }
+  />
+)
+
+const routing = (
   <Router>
     <div>
       <Switch>
-        <Route exact path = "/" component = {App}/> {/*Home*/}
-        <Route path = "/Login" component = {Login}/> {/*Login*/}
-        <Route path = "/NotFound" component = {NotFound}/> {/*Login*/}
-        <Redirect to = "/NotFound" /> {/*Redireciona p/ notfound caso nao encontre a rota*/}
+        <Route exact path="/" component={App} />
+        <PermissaoAdm path="/cadastroConsultas" component={Consulta} />
+        <PermissaoMed path="/minhasConsultas_med" component={Consultamed} />
+        <PermissaoPac path ="/minhasConsultas_pac" component={Consultaspac}/>
+        <Route path="/login" component={Login} />
+        <Route exact path="/notFound" component={NotFound} />
+        <Redirect to="/notFound" />
       </Switch>
     </div>
   </Router>
 )
 
-
-ReactDOM.render( routing, document.getElementById('root'));
-
+ReactDOM.render(routing, document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
